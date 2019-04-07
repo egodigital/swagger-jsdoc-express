@@ -16,6 +16,7 @@
  */
 
 import * as _ from 'lodash';
+import * as deepMerge from 'deepmerge';
 import { SwaggerV2DocBlock, SwaggerV2DefinitionDocBlock, SwaggerV2PathDocBlock } from './parse';
 import { asArray, compareValuesBy, isEmptyString, normalizeString, sortObjectByKey, toStringSafe } from './utils';
 
@@ -200,6 +201,7 @@ export function generateSwaggerV2Document(
         'externalDocs': _.isNil(opts.externalDocs) ? undefined : opts.externalDocs,
     };
 
+    // tags
     if (!_.isNil(opts.tags)) {
         for (const TAG_NAME of Object.keys(
             opts.tags
@@ -218,10 +220,15 @@ export function generateSwaggerV2Document(
                 continue;
             }
 
-            for (const PATH_NAME in PB.details) {
-                DOC.paths[
-                    PATH_NAME.trim()
-                ] = PB.details[ PATH_NAME ];
+            for (const DETAILS_PROP in PB.details) {
+                const PATH_PROP = DETAILS_PROP.trim();
+                if (_.isNil(DOC.paths[PATH_PROP])) {
+                    DOC.paths[PATH_PROP] = {};
+                }
+
+                DOC.paths[PATH_PROP] = sortObjectByKey(
+                    deepMerge(DOC.paths[PATH_PROP], PB.details[DETAILS_PROP])
+                );
             }
         }
 
