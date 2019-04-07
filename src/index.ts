@@ -53,7 +53,7 @@ export interface SetupSwaggerUIFromSourceFilesOptions {
     /**
      * One or more file pattern. Default: all JS and TS files inside working directory
      */
-    'files': string | string[];
+    'files'?: string | string[];
     /**
      * The custom root endpoint (name). Default: '/swagger'
      */

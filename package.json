@@ -1,6 +1,6 @@
 {
   "name": "swagger-jsdoc-express",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Parses JSDoc comments from files and strings and set ups Swagger UI from it, to be used with Express framework.",
   "main": "lib/index.js",
   "scripts": {
