@@ -1,10 +1,11 @@
 {
   "name": "swagger-jsdoc-express",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Parses JSDoc comments from files and strings and set ups Swagger UI from it, to be used with Express framework.",
   "main": "lib/index.js",
   "scripts": {
     "build": "(rm -r ./lib || true) && tsc & tsc -d",
+    "deploy": "npm install && npm run build && npm publish",
     "sandbox": "npm run build && node ./sandbox.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
