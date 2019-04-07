@@ -16,6 +16,7 @@
  */
 
 import * as _ from 'lodash';
+import * as yaml from 'js-yaml';
 
 
 /**
@@ -135,4 +136,30 @@ export function toStringSafe(val: any): string {
     }
 
     return String(val);
+}
+
+/**
+ * Tries to parse an object as YAML or JSON.
+ *
+ * @param {string} serializedData The serialized (string) data.
+ *
+ * @return {T|false} The parsed object or (false) if parsing failed.
+ */
+export function yamlOrJson<T = any>(
+    serializedData: string
+): T | false {
+    serializedData = toStringSafe(serializedData);
+    if ('' === serializedData.trim()) {
+        return undefined;
+    }
+
+    try {
+        try {
+            return yaml.safeLoad(serializedData);
+        } catch {
+            return JSON.parse(serializedData);
+        }
+    } catch {
+        return false;
+    }
 }

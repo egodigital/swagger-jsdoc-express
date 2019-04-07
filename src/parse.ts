@@ -16,8 +16,7 @@
  */
 
 import * as doctrine from 'doctrine';
-import * as yaml from 'js-yaml';
-import { asArray, isEmptyString, normalizeString, toStringSafe } from './utils';
+import { asArray, normalizeString, toStringSafe, yamlOrJson } from './utils';
 
 
 /**
@@ -134,20 +133,7 @@ export function parseSwaggerV2DocBlocks(code: string): SwaggerV2DocBlock[] {
                     {
                         const NEW_DEFINITION_DOC = NEW_DOC as SwaggerV2DefinitionDocBlock;
 
-                        let details: any;
-                        try {
-                            if (!isEmptyString(typeTag.description)) {
-                                details = yaml.safeLoad(
-                                    typeTag.description
-                                );
-                            } else {
-                                details = typeTag.description;
-                            }
-                        } catch {
-                            details = false;
-                        }
-
-                        NEW_DEFINITION_DOC.details = details;
+                        NEW_DEFINITION_DOC.details = yamlOrJson<object>(typeTag.description);
                     }
                     break;
 
@@ -155,20 +141,7 @@ export function parseSwaggerV2DocBlocks(code: string): SwaggerV2DocBlock[] {
                     {
                         const NEW_PATH_DOC = NEW_DOC as SwaggerV2PathDocBlock;
 
-                        let details: any;
-                        try {
-                            if (!isEmptyString(typeTag.description)) {
-                                details = yaml.safeLoad(
-                                    typeTag.description
-                                );
-                            } else {
-                                details = typeTag.description;
-                            }
-                        } catch {
-                            details = false;
-                        }
-
-                        NEW_PATH_DOC.details = details;
+                        NEW_PATH_DOC.details = yamlOrJson<object>(typeTag.description);
                     }
                     break;
             }
