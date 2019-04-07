@@ -105,7 +105,7 @@ export function parseSwaggerV2DocBlocks(code: string): SwaggerV2DocBlock[] {
             };
 
             const TAGS = asArray(A.tags);
-            let typeTag: doctrine.Tag;
+            let typeTag: doctrine.Tag | false = false;
             for (const T of TAGS) {
                 const TAG_NAME = normalizeString(T.title);
                 if (!TAG_NAME.startsWith('swagger')) {
@@ -119,6 +119,10 @@ export function parseSwaggerV2DocBlocks(code: string): SwaggerV2DocBlock[] {
                 }
 
                 typeTag = T;
+            }
+
+            if (!typeTag) {
+                continue;
             }
 
             if ('' === NEW_DOC.description) {

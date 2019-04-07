@@ -252,5 +252,8 @@ export function generateSwaggerV2Document(
         DOC.definitions = sortObjectByKey(DOC.definitions);
     }
 
-    return DOC;
+    // we need a "clean" plain object here
+    return JSON.parse(
+        JSON.stringify(DOC)
+    );
 }

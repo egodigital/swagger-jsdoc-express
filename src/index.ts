@@ -18,54 +18,73 @@
 import * as _ from 'lodash';
 import * as deepMerge from 'deepmerge';
 import * as express from 'express';
+import * as fastGlob from 'fast-glob';
 import * as fsExtra from 'fs-extra';
-import * as glob from 'glob';
 import * as path from 'path';
 import * as swaggerUi from 'swagger-ui-express';
+import * as yaml from 'js-yaml';
 import { GenerateSwaggerV2DocumentOptions, generateSwaggerV2Document } from './generate';
 import { parseSwaggerV2DocBlocks, SwaggerV2DocBlock } from './parse';
-import { asArray, toStringSafe } from './utils';
+import { asArray, isEmptyString, toStringSafe } from './utils';
+import { EntryItem } from 'fast-glob/out/types/entries';
+import { IPartialOptions } from 'fast-glob/out/managers/options';
 
 
 /**
- * Options for 'createSwaggerV2UIFromSourceFiles()'.
+ * Options for 'setupSwaggerUIFromSourceFiles()'.
  */
-export interface CreateSwaggerV2UIFromSourceFiles {
+export interface SetupSwaggerUIFromSourceFilesOptions {
+    /**
+     * Custom CSS for the UI.
+     */
+    'css'?: string;
     /**
      * The custom root / working directory.
      */
     'cwd'?: string;
     /**
-     * Custom file search options.
+     * Options for a swagger document.
      */
-    'fileOptions'?: glob.IOptions;
+    'document'?: GenerateSwaggerV2DocumentOptions;
     /**
-     * One or more file pattern.
+     * Custom Favicon for the UI.
+     */
+    'favIcon'?: string;
+    /**
+     * One or more file pattern. Default: all JS and TS files inside working directory
      */
     'files': string | string[];
     /**
-     * Options for a swagger document.
-     */
-    'options'?: GenerateSwaggerV2DocumentOptions;
-    /**
-     * The custom root. Default: '/swagger'
+     * The custom root endpoint (name). Default: '/swagger'
      */
     'root'?: string;
+    /**
+     * Custom file search options.
+     */
+    'searchOptions'?: IPartialOptions<EntryItem>;
+    /**
+     * Custom site title.
+     */
+    'title'?: string;
+    /**
+     * Custom (Swagger) URL.
+     */
+    'url'?: string;
 }
 
 
 /**
  * Creates (and optionally registers) an Express router for output a Swagge V2 API documentation.
  *
- * @param {CreateSwaggerV2UIFromSourceFiles} opts The options.
+ * @param {SetupSwaggerUIFromSourceFilesOptions} opts The options.
  * @param {express.Express|express.Router} [app] The optional app or router, where to register.
  */
-export function createSwaggerV2UIFromSourceFiles(
-    opts: CreateSwaggerV2UIFromSourceFiles,
+export function setupSwaggerUIFromSourceFiles(
+    opts: SetupSwaggerUIFromSourceFilesOptions,
     app?: express.Express | express.Router,
 ): express.Router {
     let cwd = toStringSafe(opts.cwd);
-    if (path.isAbsolute(cwd)) {
+    if (!path.isAbsolute(cwd)) {
         cwd = path.resolve(
             process.cwd(), cwd
         );
@@ -76,39 +95,37 @@ export function createSwaggerV2UIFromSourceFiles(
         .map(fp => toStringSafe(fp))
         .filter(fp => '' !== fp.trim());
     if (!filePatterns.length) {
-        filePatterns = [ '**' ];
+        filePatterns.push(
+            '**/*.js', '**/*.ts'
+        );
     }
 
     const FILE_OPTIONS = deepMerge(
         {
             absolute: true,
+            case: false,
             cwd: cwd,
-            debug: false,
+            deep: true,
             dot: false,
-            follow: true,
-            mark: false,
+            followSymlinkedDirectories: true,
+            markDirectories: false,
             nocase: true,
-            nodir: true,
-            nonull: false,
-            nosort: false,
-            nounique: false,
-            root: cwd,
-            silent: true,
-            stat: false,
-            sync: true,
+            onlyDirectories: false,
+            onlyFiles: true,
+            stats: false,
+            unique: true,
         },
-        opts.fileOptions || {},
+        opts.searchOptions || {},
     );
 
     const SOURCE_FILES: string[] = [];
 
-    for (const FP of filePatterns) {
-        const FILE_LIST = glob.sync(FP, FILE_OPTIONS);
-        for (const F of FILE_LIST) {
-            SOURCE_FILES.push(
-                F
-            );
-        }
+    const FILE_LIST = fastGlob.sync(filePatterns, FILE_OPTIONS)
+        .map(e => toStringSafe(e));
+    for (const F of FILE_LIST) {
+        SOURCE_FILES.push(
+            F
+        );
     }
 
     const SOURCE_BLOCKS: SwaggerV2DocBlock[] = [];
@@ -124,23 +141,69 @@ export function createSwaggerV2UIFromSourceFiles(
 
     const SWAGGER_DOC = generateSwaggerV2Document(
         SOURCE_BLOCKS,
-        opts.options,
+        opts.document,
     );
 
     let root = toStringSafe(opts.root);
     if ('' === root.trim()) {
         root = '/swagger';
     }
-    if (!root.startsWith('/')) {
+    if (!root.trim().startsWith('/')) {
         root = '/' + root;
+    }
+
+    let css = toStringSafe(opts.css);
+    if (isEmptyString(css)) {
+        css = null;
+    }
+
+    let favIcon = toStringSafe(opts.favIcon);
+    if (isEmptyString(favIcon)) {
+        favIcon = null;
+    }
+
+    let url = toStringSafe(opts.url);
+    if (isEmptyString(url)) {
+        url = null;
+    }
+
+    let title = toStringSafe(opts.title);
+    if (isEmptyString(title)) {
+        title = null;
     }
 
     const ROUTER = express.Router();
 
     ROUTER.use('/', swaggerUi.serveFiles(SWAGGER_DOC));
     ROUTER.get('/', swaggerUi.setup(
-        SWAGGER_DOC
+        SWAGGER_DOC,
+        null,  // opts
+        null,  // options
+        css,  // customCss
+        favIcon,  // customfavIcon
+        url,  // swaggerUrl
+        title,  // customeSiteTitle
     ));
+
+    // download link (JSON)
+    ROUTER.get(`/json`, function(req, res) {
+        return res.status(200)
+            .header('content-type', 'application/json; charset=utf-8')
+            .header('content-disposition', `attachment; filename=api.json`)
+            .send(new Buffer(
+                JSON.stringify(SWAGGER_DOC), 'utf8'
+            ));
+    });
+
+    // download link (YAML)
+    ROUTER.get(`/yaml`, function(req, res) {
+        return res.status(200)
+            .header('content-type', 'application/x-yaml; charset=utf-8')
+            .header('content-disposition', `attachment; filename=api.yaml`)
+            .send(new Buffer(
+                yaml.safeDump(SWAGGER_DOC), 'utf8'
+            ));
+    });
 
     if (app) {
         app.use(root, ROUTER);
