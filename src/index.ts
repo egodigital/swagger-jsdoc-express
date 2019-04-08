@@ -190,9 +190,10 @@ export function setupSwaggerUIFromSourceFiles(
         return res.status(200)
             .header('content-type', 'application/json; charset=utf-8')
             .header('content-disposition', `attachment; filename=api.json`)
-            .send(new Buffer(
-                JSON.stringify(SWAGGER_DOC), 'utf8'
-            ));
+            .send(
+                Buffer.from(JSON.stringify(SWAGGER_DOC),
+                            'utf8')
+            );
     });
 
     // download link (YAML)
@@ -200,9 +201,10 @@ export function setupSwaggerUIFromSourceFiles(
         return res.status(200)
             .header('content-type', 'application/x-yaml; charset=utf-8')
             .header('content-disposition', `attachment; filename=api.yaml`)
-            .send(new Buffer(
-                yaml.safeDump(SWAGGER_DOC), 'utf8'
-            ));
+            .send(
+                Buffer.from(yaml.safeDump(SWAGGER_DOC),
+                            'utf8')
+            );
     });
 
     if (app) {
