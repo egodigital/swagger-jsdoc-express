@@ -191,7 +191,7 @@ export function setupSwaggerUIFromSourceFiles(
             .header('content-type', 'application/json; charset=utf-8')
             .header('content-disposition', `attachment; filename=api.json`)
             .send(
-                Buffer.from(JSON.stringify(SWAGGER_DOC),
+                Buffer.from(JSON.stringify(SWAGGER_DOC, null, 2),
                             'utf8')
             );
     });
