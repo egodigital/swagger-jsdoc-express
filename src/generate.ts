@@ -207,7 +207,7 @@ export function generateSwaggerV2Document(
         'paths': PATH_BLOCKS.length ? {} : undefined,
         'definitions': DEFINITION_BLOCKS.length ? {} : undefined,
         'externalDocs': _.isNil(opts.externalDocs) ? undefined : opts.externalDocs,
-        'basePath': isEmptyString(opts.basePath) ? undefined : opts.basePath,
+        'basePath': isEmptyString(opts.basePath) ? undefined : toStringSafe(opts.basePath),
     };
 
     // tags
