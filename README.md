@@ -127,3 +127,7 @@ app.get('/monitoring/status', (request, response) => {
 ```
 
 Instead of using [YAML](https://en.wikipedia.org/wiki/YAML), you are also able to use [JSON](https://en.wikipedia.org/wiki/JSON) format.
+
+## Contributors
+
+* [m1h43l](https://github.com/m1h43l)

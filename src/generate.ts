@@ -31,6 +31,10 @@ export type ApiUrlScheme = 'http' | 'https';
  */
 export interface GenerateSwaggerV2DocumentOptions {
     /**
+     * The base path of the API.
+     */
+    'basePath'?: string;
+    /**
      * External docs.
      */
     'externalDocs'?: SwaggerV2DocumentExternalDocs;
@@ -50,8 +54,6 @@ export interface GenerateSwaggerV2DocumentOptions {
      * List of tags (key => name; value => description).
      */
     'tags'?: { [name: string]: string };
-
-    'basePath'?: string;
 }
 
 /**
@@ -138,7 +140,9 @@ export interface SwaggerV2Document {
      * External docs.
      */
     'externalDocs'?: SwaggerV2DocumentExternalDocs;
-
+    /**
+     * The base path of the API.
+     */
     'basePath'?: string;
 }
 
@@ -203,7 +207,7 @@ export function generateSwaggerV2Document(
         'paths': PATH_BLOCKS.length ? {} : undefined,
         'definitions': DEFINITION_BLOCKS.length ? {} : undefined,
         'externalDocs': _.isNil(opts.externalDocs) ? undefined : opts.externalDocs,
-        'basePath': _.isNil(opts.basePath) ? undefined : opts.basePath
+        'basePath': isEmptyString(opts.basePath) ? undefined : opts.basePath,
     };
 
     // tags

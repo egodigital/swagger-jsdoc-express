@@ -1,5 +1,9 @@
 # Change Log (swagger-jsdoc-express)
 
+## 1.3.0
+
+* [m1h43l](https://github.com/m1h43l) added `basePath` for swagger output documents
+
 ## 1.2.0
 
 * optimized JSON output
