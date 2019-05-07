@@ -51,6 +51,10 @@ export interface GenerateSwaggerV2DocumentOptions {
      */
     'schemes'?: ApiUrlScheme | ApiUrlScheme[];
     /**
+     * Security definitions.
+     */
+    'securityDefinitions'?: SwaggerV2SecurityDefintionList;
+    /**
      * List of tags (key => name; value => description).
      */
     'tags'?: { [name: string]: string };
@@ -144,6 +148,10 @@ export interface SwaggerV2Document {
      * The base path of the API.
      */
     'basePath'?: string;
+    /**
+     * Security definitions.
+     */
+    'securityDefinitions'?: SwaggerV2SecurityDefintionList;
 }
 
 /**
@@ -166,6 +174,16 @@ export type SwaggerV2DocumentTag = {
      */
     'name'?: string;
 };
+
+/**
+ * Data for a Swagger V2 security defintion.
+ */
+export type SwaggerV2SecurityDefintion = { [key: string]: any };
+
+/**
+ * Swagger V2 security defintions.
+ */
+export type SwaggerV2SecurityDefintionList = { [name: string]: SwaggerV2SecurityDefintion };
 
 
 /**
@@ -208,6 +226,7 @@ export function generateSwaggerV2Document(
         'definitions': DEFINITION_BLOCKS.length ? {} : undefined,
         'externalDocs': _.isNil(opts.externalDocs) ? undefined : opts.externalDocs,
         'basePath': isEmptyString(opts.basePath) ? undefined : toStringSafe(opts.basePath),
+        'securityDefinitions': _.isNil(opts.securityDefinitions) ? undefined : opts.securityDefinitions,
     };
 
     // tags

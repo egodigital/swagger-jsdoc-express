@@ -131,3 +131,11 @@ Instead of using [YAML](https://en.wikipedia.org/wiki/YAML), you are also able t
 ## Contributors
 
 * [m1h43l](https://github.com/m1h43l)
+
+## Documentation
+
+The complete API documentation can be found [here](https://egodigital.github.io/swagger-jsdoc-express/).
+
+## Resources
+
+* [Swagger 2.0 defintion](https://swagger.io/docs/specification/2-0/basic-structure/)
