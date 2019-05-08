@@ -16,7 +16,11 @@
  */
 
 import * as _ from 'lodash';
+import * as doctrine from 'doctrine';
 import * as yaml from 'js-yaml';
+
+
+const JSDOC_REGEX = /\/\*\*([\s\S]*?)\*\//gm;
 
 
 /**
@@ -28,7 +32,7 @@ import * as yaml from 'js-yaml';
  */
 export function asArray<T>(val: T | T[]): T[] {
     if (!Array.isArray(val)) {
-        val = [ val ];
+        val = [val];
     }
 
     return val.filter(i => !_.isNil(i));
@@ -82,6 +86,32 @@ export function normalizeString(val: any): string {
     return toStringSafe(val)
         .toLowerCase()
         .trim();
+}
+
+/**
+ * Extracts JSDoc annotations from code.
+ *
+ * @param {string} code The code.
+ *
+ * @return {doctrine.Annotation[]} The extracted annotations.
+ */
+export function parseJSDoc(code: any): doctrine.Annotation[] {
+    code = toStringSafe(code);
+
+    const COMMENTS: doctrine.Annotation[] = [];
+
+    const RESULTS = code.match(JSDOC_REGEX);
+    if (RESULTS) {
+        for (const R of RESULTS) {
+            COMMENTS.push(
+                doctrine.parse(R, {
+                    unwrap: true
+                })
+            );
+        }
+    }
+
+    return COMMENTS;
 }
 
 /**

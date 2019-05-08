@@ -16,13 +16,13 @@
  */
 
 import * as doctrine from 'doctrine';
-import { asArray, normalizeString, toStringSafe, yamlOrJson } from './utils';
+import { asArray, normalizeString, parseJSDoc, toStringSafe, yamlOrJson } from '../utils';
 
 
 /**
- * A general Swagger V2 documentation block.
+ * A general Swagger documentation block.
  */
-export interface SwaggerV2DocBlock<TDetails extends object = object> {
+export interface SwaggerDocBlock<TDetails extends object = object> {
     /**
      * The summary.
      */
@@ -42,60 +42,38 @@ export interface SwaggerV2DocBlock<TDetails extends object = object> {
 }
 
 /**
- * A Swagger V2 documentation block for a definition.
+ * A Swagger documentation block for a definition.
  */
-export interface SwaggerV2DefinitionDocBlock extends SwaggerV2DocBlock {
+export interface SwaggerDefinitionDocBlock extends SwaggerDocBlock {
     /** @inheritdoc */
     'type': 'definition';
 }
 
 /**
- * A Swagger V2 documentation block for a path.
+ * A Swagger documentation block for a path.
  */
-export interface SwaggerV2PathDocBlock extends SwaggerV2DocBlock {
+export interface SwaggerPathDocBlock extends SwaggerDocBlock {
     /** @inheritdoc */
     'type': 'path';
 }
 
 
-const JSDOC_REGEX = /\/\*\*([\s\S]*?)\*\//gm;
-
-
-function parseJSDoc(code: string): doctrine.Annotation[] {
-    code = toStringSafe(code);
-
-    const COMMENTS: doctrine.Annotation[] = [];
-
-    const RESULTS = code.match(JSDOC_REGEX);
-    if (RESULTS) {
-        for (const R of RESULTS) {
-            COMMENTS.push(
-                doctrine.parse(R, {
-                    unwrap: true
-                })
-            );
-        }
-    }
-
-    return COMMENTS;
-}
-
 /**
- * Extracts / parses Swagger V2 documentation inside JSDoc blocks.
+ * Extracts / parses Swagger documentation inside JSDoc blocks.
  *
- * @param {string} code The source code with the JSDoc blocks.
+ * @param {any} code The source code with the JSDoc blocks.
  *
- * @return {SwaggerV2DocBlock[]} The list of documentation.
+ * @return {SwaggerDocBlock[]} The list of documentation.
  */
-export function parseSwaggerV2DocBlocks(code: string): SwaggerV2DocBlock[] {
-    const DOCS: SwaggerV2DocBlock[] = [];
+export function parseSwaggerDocBlocks(code: any): SwaggerDocBlock[] {
+    const DOCS: SwaggerDocBlock[] = [];
 
     const ANNOTATIONS = asArray(
         parseJSDoc(code)
     );
     for (const A of ANNOTATIONS) {
         try {
-            const NEW_DOC: SwaggerV2DocBlock = {
+            const NEW_DOC: SwaggerDocBlock = {
                 description: toStringSafe(A.description)
                     .trim(),
                 details: undefined,
@@ -131,7 +109,7 @@ export function parseSwaggerV2DocBlocks(code: string): SwaggerV2DocBlock[] {
             switch (NEW_DOC.type) {
                 case 'definition':
                     {
-                        const NEW_DEFINITION_DOC = NEW_DOC as SwaggerV2DefinitionDocBlock;
+                        const NEW_DEFINITION_DOC = NEW_DOC as SwaggerDefinitionDocBlock;
 
                         NEW_DEFINITION_DOC.details = yamlOrJson<object>(typeTag.description);
                     }
@@ -139,7 +117,7 @@ export function parseSwaggerV2DocBlocks(code: string): SwaggerV2DocBlock[] {
 
                 case 'path':
                     {
-                        const NEW_PATH_DOC = NEW_DOC as SwaggerV2PathDocBlock;
+                        const NEW_PATH_DOC = NEW_DOC as SwaggerPathDocBlock;
 
                         NEW_PATH_DOC.details = yamlOrJson<object>(typeTag.description);
                     }
@@ -154,3 +132,6 @@ export function parseSwaggerV2DocBlocks(code: string): SwaggerV2DocBlock[] {
 
     return DOCS;
 }
+
+
+export * from './swaggerV2';

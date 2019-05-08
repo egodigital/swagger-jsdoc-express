@@ -1,5 +1,9 @@
 # Change Log (swagger-jsdoc-express)
 
+## 1.5.0
+
+* implemented Open API 3.0 support
+
 ## 1.4.0
 
 * added `securityDefinitions` to [GenerateSwaggerV2DocumentOptions](https://egodigital.github.io/swagger-jsdoc-express/interfaces/_generate_.generateswaggerv2documentoptions.html) interface

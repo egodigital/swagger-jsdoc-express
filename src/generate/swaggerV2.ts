@@ -17,14 +17,10 @@
 
 import * as _ from 'lodash';
 import * as deepMerge from 'deepmerge';
-import { SwaggerV2DocBlock, SwaggerV2DefinitionDocBlock, SwaggerV2PathDocBlock } from './parse';
-import { asArray, compareValuesBy, isEmptyString, normalizeString, sortObjectByKey, toStringSafe } from './utils';
+import { ApiUrlScheme } from './index';
+import { SwaggerV2DocBlock, SwaggerV2DefinitionDocBlock, SwaggerV2PathDocBlock } from '../parse';
+import { asArray, compareValuesBy, isEmptyString, normalizeString, sortObjectByKey, toStringSafe } from '../utils';
 
-
-/**
- * Possible value for an API url scheme.
- */
-export type ApiUrlScheme = 'http' | 'https';
 
 /**
  * Options for 'generateSwaggerV2Doc()' function.
@@ -273,7 +269,7 @@ export function generateSwaggerV2Document(
             for (const DEF_NAME in DB.details) {
                 DOC.definitions[
                     DEF_NAME.trim()
-                ] = DB.details[ DEF_NAME ];
+                ] = DB.details[DEF_NAME];
             }
         }
 

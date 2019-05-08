@@ -24,7 +24,7 @@ import * as path from 'path';
 import * as swaggerUi from 'swagger-ui-express';
 import * as yaml from 'js-yaml';
 import { GenerateSwaggerV2DocumentOptions, generateSwaggerV2Document } from './generate';
-import { parseSwaggerV2DocBlocks, SwaggerV2DocBlock } from './parse';
+import { parseSwaggerDocBlocks, SwaggerDocBlock } from './parse';
 import { asArray, isEmptyString, toStringSafe } from './utils';
 import { EntryItem } from 'fast-glob/out/types/entries';
 import { IPartialOptions } from 'fast-glob/out/managers/options';
@@ -128,7 +128,7 @@ export function setupSwaggerUIFromSourceFiles(
         );
     }
 
-    const SOURCE_BLOCKS: SwaggerV2DocBlock[] = [];
+    const SOURCE_BLOCKS: SwaggerDocBlock[] = [];
 
     SOURCE_FILES.forEach(sf => {
         const SOURCE = fsExtra.readFileSync(
@@ -136,7 +136,7 @@ export function setupSwaggerUIFromSourceFiles(
         );
 
         SOURCE_BLOCKS.push
-                     .apply(SOURCE_BLOCKS, parseSwaggerV2DocBlocks(SOURCE));
+                     .apply(SOURCE_BLOCKS, parseSwaggerDocBlocks(SOURCE));
     });
 
     const SWAGGER_DOC = generateSwaggerV2Document(
