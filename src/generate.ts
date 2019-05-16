@@ -68,47 +68,6 @@ export type SwaggerV2DocDefinitionList = {
 };
 
 /**
- * Information of a Swagger 2 document.
- */
-export interface SwaggerV2DocumentInfo {
-    /**
-     * API description.
-     */
-    'description'?: string;
-    /**
-     * Version.
-     */
-    'version'?: string;
-    /**
-     * The title.
-     */
-    'title'?: string;
-    /**
-     * Contact information.
-     */
-    'contact'?: {
-        /**
-         * The email address.
-         */
-        'email'?: string;
-    };
-}
-
-/**
- * Swagger V2 external documentation information.
- */
-export interface SwaggerV2DocumentExternalDocs {
-    /**
-     * A description.
-     */
-    'description'?: string;
-    /**
-     * The URL to the documentation.
-     */
-    'url'?: string;
-}
-
-/**
  * A Swagger 2 document.
  */
 export interface SwaggerV2Document {
@@ -152,6 +111,78 @@ export interface SwaggerV2Document {
      * Security definitions.
      */
     'securityDefinitions'?: SwaggerV2SecurityDefintionList;
+}
+
+/**
+ * Information of a Swagger 2 document.
+ */
+export interface SwaggerV2DocumentInfo {
+    /**
+     * Contact information.
+     */
+    'contact'?: SwaggerV2DocumentInfoContact;
+    /**
+     * API description.
+     */
+    'description'?: string;
+    /**
+     * License information.
+     */
+    'license'?: SwaggerV2DocumentInfoLicense;
+    /**
+     * Version.
+     */
+    'version'?: string;
+    /**
+     * The title.
+     */
+    'title'?: string;
+}
+
+/**
+ * Contact information in the 'info' block of a Swagger 2 document.
+ */
+export interface SwaggerV2DocumentInfoContact {
+    /**
+     * The email address.
+     */
+    'email'?: string;
+    /**
+     * The display name of the contact.
+     */
+    'name'?: string;
+    /**
+     * The URL.
+     */
+    'url'?: string;
+}
+
+/**
+ * License information in the 'info' block of a Swagger 2 document.
+ */
+export interface SwaggerV2DocumentInfoLicense {
+    /**
+     * The display name of the license.
+     */
+    'name'?: string;
+    /**
+     * The URL.
+     */
+    'url'?: string;
+}
+
+/**
+ * Swagger V2 external documentation information.
+ */
+export interface SwaggerV2DocumentExternalDocs {
+    /**
+     * A description.
+     */
+    'description'?: string;
+    /**
+     * The URL to the documentation.
+     */
+    'url'?: string;
 }
 
 /**
@@ -273,7 +304,7 @@ export function generateSwaggerV2Document(
             for (const DEF_NAME in DB.details) {
                 DOC.definitions[
                     DEF_NAME.trim()
-                ] = DB.details[ DEF_NAME ];
+                ] = DB.details[DEF_NAME];
             }
         }
 

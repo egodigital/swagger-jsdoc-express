@@ -1,5 +1,12 @@
 # Change Log (swagger-jsdoc-express)
 
+## 1.5.0
+
+* extended contact information object of [SwaggerV2DocumentInfo](https://egodigital.github.io/swagger-jsdoc-express/interfaces/_generate_.swaggerv2document.html) interface
+* can add license information to [SwaggerV2DocumentInfo](https://egodigital.github.io/swagger-jsdoc-express/interfaces/_generate_.swaggerv2document.html) interface now
+* updated to `swagger-ui-express^4.0.3`
+* code cleanups and improvements
+
 ## 1.4.0
 
 * added `securityDefinitions` to [GenerateSwaggerV2DocumentOptions](https://egodigital.github.io/swagger-jsdoc-express/interfaces/_generate_.generateswaggerv2documentoptions.html) interface
