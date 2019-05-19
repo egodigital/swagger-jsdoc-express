@@ -1,6 +1,6 @@
 {
   "name": "swagger-jsdoc-express",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "description": "Parses JSDoc comments from files and strings and set ups Swagger UI from it, to be used with Express framework.",
   "main": "lib/index.js",
   "scripts": {
@@ -47,15 +47,15 @@
     "@types/fs-extra": "^5.1.0",
     "@types/js-yaml": "^3.12.1",
     "@types/lodash": "^4.14.129",
-    "@types/node": "^8.10.48",
+    "@types/node": "^10.14.7",
     "@types/swagger-ui-express": "^3.0.0",
     "deepmerge": "^3.2.0",
     "doctrine": "^3.0.0",
-    "express": "^4.16.4",
-    "fast-glob": "^2.2.6",
+    "express": "^4.17.0",
+    "fast-glob": "^2.2.7",
     "fs-extra": "^7.0.1",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.11",
-    "swagger-ui-express": "^4.0.3"
+    "swagger-ui-express": "^4.0.4"
   }
 }

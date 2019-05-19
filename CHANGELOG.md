@@ -1,5 +1,13 @@
 # Change Log (swagger-jsdoc-express)
 
+## 2.0.0
+
+* code is build for [Node.js 10+](https://nodejs.org/dist/latest-v10.x/docs/api/) now
+* set compiler flags and libs to `es2017`
+* updated to `express@^4.17.0`
+* updated to `fast-glob@^2.2.7`
+* updated to `swagger-ui-express@^4.0.4`
+
 ## 1.5.0
 
 * extended contact information object of [SwaggerV2DocumentInfo](https://egodigital.github.io/swagger-jsdoc-express/interfaces/_generate_.swaggerv2document.html) interface
