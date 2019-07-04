@@ -166,7 +166,7 @@ export function yamlOrJson<T = any>(
             return yaml.safeLoad(serializedData);
         } catch (e) {
             if (debug) {
-                console.trace(
+                console.error(
                     `swagger-jsdoc-express.yamlOrJson(ERROR.YAML): '${toStringSafe(e)}'`
                 );
             }
@@ -175,7 +175,7 @@ export function yamlOrJson<T = any>(
         }
     } catch (e) {
         if (debug) {
-            console.trace(
+            console.error(
                 `swagger-jsdoc-express.yamlOrJson(ERROR.JSON): '${toStringSafe(e)}'`
             );
         }

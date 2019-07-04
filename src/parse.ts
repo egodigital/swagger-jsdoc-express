@@ -174,7 +174,7 @@ export function parseSwaggerV2DocBlocks(
             );
         } catch (e) {
             if (opts.debug) {
-                console.trace(
+                console.error(
                     `swagger-jsdoc-express.parseSwaggerV2DocBlocks(ERROR): '${toStringSafe(e)}'`
                 );
             }
