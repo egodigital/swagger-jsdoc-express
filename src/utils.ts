@@ -129,6 +129,12 @@ export function toStringSafe(val: any): string {
         return '';
     }
 
+    if (val instanceof Error) {
+        return `[${val.name}] '${val.message}'
+        
+${val.stack}`;
+    }
+
     if (_.isFunction(val['toString'])) {
         return String(
             val.toString()
