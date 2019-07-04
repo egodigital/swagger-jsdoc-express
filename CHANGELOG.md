@@ -1,6 +1,6 @@
 # Change Log (swagger-jsdoc-express)
 
-## 2.1.0
+## 2.1.2
 
 * added `debug` property for `ParseSwaggerV2DocBlocksOptions` and `SetupSwaggerUIFromSourceFilesOptions` interfaces
 * updated to `deepmerge@^3.3.0`

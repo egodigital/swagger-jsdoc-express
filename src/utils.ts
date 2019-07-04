@@ -142,11 +142,13 @@ export function toStringSafe(val: any): string {
  * Tries to parse an object as YAML or JSON.
  *
  * @param {string} serializedData The serialized (string) data.
+ * @param {boolean} [debug] Output errors for debugging or not.
  *
  * @return {T|false} The parsed object or (false) if parsing failed.
  */
 export function yamlOrJson<T = any>(
-    serializedData: string
+    serializedData: string,
+    debug = false,
 ): T | false {
     serializedData = toStringSafe(serializedData);
     if ('' === serializedData.trim()) {
@@ -156,10 +158,22 @@ export function yamlOrJson<T = any>(
     try {
         try {
             return yaml.safeLoad(serializedData);
-        } catch {
+        } catch (e) {
+            if (debug) {
+                console.trace(
+                    `swagger-jsdoc-express.yamlOrJson(ERROR.YAML): '${toStringSafe(e)}'`
+                );
+            }
+
             return JSON.parse(serializedData);
         }
-    } catch {
+    } catch (e) {
+        if (debug) {
+            console.trace(
+                `swagger-jsdoc-express.yamlOrJson(ERROR.JSON): '${toStringSafe(e)}'`
+            );
+        }
+
         return false;
     }
 }

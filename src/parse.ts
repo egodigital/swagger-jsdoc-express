@@ -152,7 +152,9 @@ export function parseSwaggerV2DocBlocks(
                     {
                         const NEW_DEFINITION_DOC = NEW_DOC as SwaggerV2DefinitionDocBlock;
 
-                        NEW_DEFINITION_DOC.details = yamlOrJson<object>(typeTag.description);
+                        NEW_DEFINITION_DOC.details = yamlOrJson<object>(
+                            typeTag.description, opts.debug
+                        );
                     }
                     break;
 
@@ -160,7 +162,9 @@ export function parseSwaggerV2DocBlocks(
                     {
                         const NEW_PATH_DOC = NEW_DOC as SwaggerV2PathDocBlock;
 
-                        NEW_PATH_DOC.details = yamlOrJson<object>(typeTag.description);
+                        NEW_PATH_DOC.details = yamlOrJson<object>(
+                            typeTag.description, opts.debug
+                        );
                     }
                     break;
             }
@@ -170,7 +174,7 @@ export function parseSwaggerV2DocBlocks(
             );
         } catch (e) {
             if (opts.debug) {
-                console.log(
+                console.trace(
                     `swagger-jsdoc-express.parseSwaggerV2DocBlocks(ERROR): '${toStringSafe(e)}'`
                 );
             }
