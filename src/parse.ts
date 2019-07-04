@@ -169,9 +169,11 @@ export function parseSwaggerV2DocBlocks(
                 NEW_DOC
             );
         } catch (e) {
-            console.error(
-                `swagger-jsdoc-express.parseSwaggerV2DocBlocks(ERROR): '${toStringSafe(e)}'`
-            );
+            if (opts.debug) {
+                console.log(
+                    `swagger-jsdoc-express.parseSwaggerV2DocBlocks(ERROR): '${toStringSafe(e)}'`
+                );
+            }
         }
     }
 
