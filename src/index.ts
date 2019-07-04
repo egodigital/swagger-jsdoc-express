@@ -43,6 +43,10 @@ export interface SetupSwaggerUIFromSourceFilesOptions {
      */
     'cwd'?: string;
     /**
+     * Show debug message(s), like errors or not.
+     */
+    'debug'?: boolean;
+    /**
      * Options for a swagger document.
      */
     'document'?: GenerateSwaggerV2DocumentOptions;
@@ -136,7 +140,9 @@ export function setupSwaggerUIFromSourceFiles(
         );
 
         SOURCE_BLOCKS.push
-                     .apply(SOURCE_BLOCKS, parseSwaggerV2DocBlocks(SOURCE));
+            .apply(SOURCE_BLOCKS, parseSwaggerV2DocBlocks(SOURCE, {
+                debug: opts.debug,
+            }));
     });
 
     const SWAGGER_DOC = generateSwaggerV2Document(
@@ -186,24 +192,24 @@ export function setupSwaggerUIFromSourceFiles(
     ));
 
     // download link (JSON)
-    ROUTER.get(`/json`, function(req, res) {
+    ROUTER.get(`/json`, function (req, res) {
         return res.status(200)
             .header('content-type', 'application/json; charset=utf-8')
             .header('content-disposition', `attachment; filename=api.json`)
             .send(
                 Buffer.from(JSON.stringify(SWAGGER_DOC, null, 2),
-                            'utf8')
+                    'utf8')
             );
     });
 
     // download link (YAML)
-    ROUTER.get(`/yaml`, function(req, res) {
+    ROUTER.get(`/yaml`, function (req, res) {
         return res.status(200)
             .header('content-type', 'application/x-yaml; charset=utf-8')
             .header('content-disposition', `attachment; filename=api.yaml`)
             .send(
                 Buffer.from(yaml.safeDump(SWAGGER_DOC),
-                            'utf8')
+                    'utf8')
             );
     });
 

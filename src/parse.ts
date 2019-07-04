@@ -15,9 +15,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import * as _ from 'lodash';
 import * as doctrine from 'doctrine';
 import { asArray, normalizeString, toStringSafe, yamlOrJson } from './utils';
 
+
+/**
+ * Additional and custom options for 'parseSwaggerV2DocBlocks()' function.
+ */
+export interface ParseSwaggerV2DocBlocksOptions {
+    /**
+     * Show debug message(s), like errors or not.
+     */
+    'debug'?: boolean;
+}
 
 /**
  * A general Swagger V2 documentation block.
@@ -84,10 +95,18 @@ function parseJSDoc(code: string): doctrine.Annotation[] {
  * Extracts / parses Swagger V2 documentation inside JSDoc blocks.
  *
  * @param {string} code The source code with the JSDoc blocks.
+ * @param {ParseSwaggerV2DocBlocksOptions} [opts] Additional and custom options.
  *
  * @return {SwaggerV2DocBlock[]} The list of documentation.
  */
-export function parseSwaggerV2DocBlocks(code: string): SwaggerV2DocBlock[] {
+export function parseSwaggerV2DocBlocks(
+    code: string,
+    opts?: ParseSwaggerV2DocBlocksOptions
+): SwaggerV2DocBlock[] {
+    if (_.isNil(opts)) {
+        opts = <any>{};
+    }
+
     const DOCS: SwaggerV2DocBlock[] = [];
 
     const ANNOTATIONS = asArray(
@@ -149,7 +168,11 @@ export function parseSwaggerV2DocBlocks(code: string): SwaggerV2DocBlock[] {
             DOCS.push(
                 NEW_DOC
             );
-        } catch { }
+        } catch (e) {
+            console.error(
+                `swagger-jsdoc-express.parseSwaggerV2DocBlocks(ERROR): '${toStringSafe(e)}'`
+            );
+        }
     }
 
     return DOCS;

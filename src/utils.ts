@@ -28,7 +28,7 @@ import * as yaml from 'js-yaml';
  */
 export function asArray<T>(val: T | T[]): T[] {
     if (!Array.isArray(val)) {
-        val = [ val ];
+        val = [val];
     }
 
     return val.filter(i => !_.isNil(i));
