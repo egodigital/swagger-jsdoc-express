@@ -36,7 +36,7 @@ swaggerJSDocExpress.setupSwaggerUIFromSourceFiles(
 
 app.listen(8080, () => {
     // should be available via
-    // https://localhost:8080/swagger
+    // http://localhost:8080/swagger
     // now
 });
 ```
