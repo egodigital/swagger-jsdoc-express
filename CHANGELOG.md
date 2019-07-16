@@ -1,5 +1,9 @@
 # Change Log (swagger-jsdoc-express)
 
+## 2.4.0
+
+* updated to `lodash^4.17.14`
+
 ## 2.3.0
 
 * added `debug` property for `ParseSwaggerV2DocBlocksOptions` and `SetupSwaggerUIFromSourceFilesOptions` interfaces
