@@ -1,5 +1,10 @@
 # Change Log (swagger-jsdoc-express)
 
+## 3.0.0
+
+* updated to `lodash^4.17.15`
+* updated to `swagger-ui-express^4.1.2`
+
 ## 2.4.0
 
 * updated to `lodash^4.17.14`

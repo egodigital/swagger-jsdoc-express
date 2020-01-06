@@ -1,6 +1,6 @@
 {
   "name": "swagger-jsdoc-express",
-  "version": "2.4.0",
+  "version": "3.0.0",
   "description": "Parses JSDoc comments from files and strings and set ups Swagger UI from it, to be used with Express framework.",
   "main": "lib/index.js",
   "scripts": {
@@ -37,18 +37,18 @@
   },
   "homepage": "https://github.com/egodigital/swagger-jsdoc-express#readme",
   "devDependencies": {
-    "@egodigital/tsconfig": "^1.2.0",
-    "tslint": "^5.18.0",
-    "typedoc": "^0.14.2",
-    "typescript": "3.4.5"
+    "@egodigital/tsconfig": "^1.3.0",
+    "tslint": "^5.20.1",
+    "typedoc": "^0.15.6",
+    "typescript": "^3.7.4"
   },
   "dependencies": {
     "@types/doctrine": "0.0.3",
-    "@types/express": "^4.17.0",
+    "@types/express": "4.17.1",
     "@types/fs-extra": "^5.1.0",
     "@types/js-yaml": "^3.12.1",
-    "@types/lodash": "^4.14.136",
-    "@types/node": "^10.14.12",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^10.17.13",
     "@types/swagger-ui-express": "^3.0.1",
     "deepmerge": "^3.3.0",
     "doctrine": "^3.0.0",
@@ -56,7 +56,7 @@
     "fast-glob": "^2.2.7",
     "fs-extra": "^7.0.1",
     "js-yaml": "^3.13.1",
-    "lodash": "^4.17.14",
-    "swagger-ui-express": "^4.0.7"
+    "lodash": "^4.17.15",
+    "swagger-ui-express": "^4.1.2"
   }
 }
