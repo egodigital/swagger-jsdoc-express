@@ -1,5 +1,12 @@
 # Change Log (swagger-jsdoc-express)
 
+## 4.0.0
+
+* updated to `deepmerge^4.2.2`
+* updated to `fast-glob^3.1.1`
+* updated to `fs-extra^8.1.0`
+* updated to `swagger-ui-express^4.1.3`
+
 ## 3.0.0
 
 * updated to `lodash^4.17.15`

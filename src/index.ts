@@ -26,8 +26,6 @@ import * as yaml from 'js-yaml';
 import { GenerateSwaggerV2DocumentOptions, generateSwaggerV2Document } from './generate';
 import { parseSwaggerV2DocBlocks, SwaggerV2DocBlock } from './parse';
 import { asArray, isEmptyString, toStringSafe } from './utils';
-import { EntryItem } from 'fast-glob/out/types/entries';
-import { IPartialOptions } from 'fast-glob/out/managers/options';
 
 
 /**
@@ -65,7 +63,7 @@ export interface SetupSwaggerUIFromSourceFilesOptions {
     /**
      * Custom file search options.
      */
-    'searchOptions'?: IPartialOptions<EntryItem>;
+    'searchOptions'?: fastGlob.Options;
     /**
      * Custom site title.
      */
