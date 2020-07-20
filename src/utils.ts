@@ -163,7 +163,7 @@ export function yamlOrJson<T = any>(
 
     try {
         try {
-            return yaml.safeLoad(serializedData);
+            return yaml.safeLoad(serializedData) as any;
         } catch (e) {
             if (debug) {
                 console.error(
