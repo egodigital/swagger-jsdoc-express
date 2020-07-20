@@ -1,6 +1,10 @@
 # Change Log (swagger-jsdoc-express)
 
-## 4.0.0
+## 4.1.0
+
+* npm update
+
+## 4.0.1
 
 * updated to `deepmerge^4.2.2`
 * updated to `fast-glob^3.1.1`
